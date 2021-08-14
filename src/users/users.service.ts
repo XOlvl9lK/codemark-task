@@ -43,6 +43,10 @@ export class UsersService {
   }
 
   async update(user) {
+    const candidate = await this.getByLogin(user.login)
+    if (!candidate){
+      throw new HttpException('Такого польлзователя не существует', HttpStatus.BAD_REQUEST)
+    }
     if (!user.roles) {
       await this.userRepository.save(user)
     } else {
